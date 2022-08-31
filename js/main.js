@@ -86,11 +86,7 @@ let app = new Vue({
       // 1列を曜日ごとに分割
       let week = [];
       for (i = 0; i < weeklen; i++) {
-        // this.splitRow(weekArray[i], week);
-        for (j = 0; j < 30; j += 6) {
-          let weekDay = weekArray[i].slice(j, (j + 6));
-          week.push(weekDay)
-        }
+        this.splitRow(weekArray[i], week);
       }
 
       // １つの曜日内に同じ数値がないように重複判定
@@ -100,11 +96,8 @@ let app = new Vue({
           let shuffleNewArray = this.shuffle(numArray);
 
           // 再度1列を曜日ごとに分割
-          let newWeek = []
-          for (j = 0; j < 30; j += 6) {
-            let weekDay = shuffleNewArray.slice(j, (j + 6));
-            newWeek.push(weekDay)
-          }
+          let newWeek = [];
+          this.splitRow(shuffleNewArray, newWeek);
 
           // 元の配列にシャッフルした部分だけ戻す
           newWeek.forEach(function (value, i) {
@@ -113,8 +106,7 @@ let app = new Vue({
         }
       }
 
-      // 配列を5等分にする
-      // 1日分の配列 × 5(1週間分の配列) × 5(当月の週の分)
+      // 配列を5等分にする（1日分の配列 × 5(1週間分の配列) × 5(当月の週の分)）
       week = this.fiveArray(week);
 
       // 曜日ごとの出勤日を赤く染める
@@ -145,8 +137,8 @@ let app = new Vue({
     },
     // 1列を曜日ごとに分割
     splitRow: function (shuffleArray, week) {
-      for (i = 0; i < 30; i += 6) {
-        let weekDay = shuffleArray.slice(i, (i + 6));
+      for (z = 0; z < 30; z += 6) {
+        let weekDay = shuffleArray.slice(z, (z + 6));
         week.push(weekDay)
       }
     },
