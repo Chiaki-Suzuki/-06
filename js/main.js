@@ -106,25 +106,20 @@ let app = new Vue({
         }
       }
 
-      // 配列を5等分にする（1日分の配列 × 5(1週間分の配列) × 5(当月の週の分)）
-      week = this.fiveArray(week);
-
       // 曜日ごとの出勤日を赤く染める
       let num = 1;
-      for (i = 0; i < weeklen; i++) {
-        for (j = 0; j < 5; j++) {
-          // 土日を除く
-          if (num === 6 | num === 13 | num === 20 | num === 27) {
-            num = num + 1;
-            num = num + 1;
-          }
-          // 配列が出勤日数を超過したら処理を止める
-          else if (num > len) {
-            break;
-          }
-          this.workDay(week[i][j], len, num);
+      for (i = 0; i < week.length; i++) {
+        // 土日を除く
+        if (num === 6 | num === 13 | num === 20 | num === 27) {
+          num = num + 1;
           num = num + 1;
         }
+        // 配列が出勤日数を超過したら処理を止める
+        else if (num > len) {
+          break;
+        }
+        this.workDay(week[i], len, num);
+        num = num + 1;
       }
     },
     // 配列内をシャッフルする
@@ -141,16 +136,6 @@ let app = new Vue({
         let weekDay = shuffleArray.slice(z, (z + 6));
         week.push(weekDay)
       }
-    },
-    // 配列を5等分にする
-    fiveArray: function(array){
-      let newWeek = [];
-      let oneWeek = [];
-      for (j = 0; j < array.length; j += 5) {
-        oneWeek = array.slice(j, (j + 5));
-        newWeek.push(oneWeek)
-      }
-      return newWeek;
     },
     // 勤務日を赤にする
     workDay: function (array, len, num) {
