@@ -27,8 +27,18 @@ ul, ol {
   margin: 40px auto;
 }
 
+.sat {
+  background-color: #bfdcfa;
+}
+.sun {
+  background-color: #ffcbcb;
+}
+
 .red {
   background-color: #f00;
+}
+.gray {
+  background-color: #aaa;
 }
 
 /*-------------------------

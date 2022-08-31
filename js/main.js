@@ -4,8 +4,6 @@ let app = new Vue({
     month: '',
     calendar: [],
     week: [],
-    isSat: false,
-    isSun: false,
     firstSat: '',
     firstSun: ''
   },
@@ -73,6 +71,39 @@ let app = new Vue({
     for (i = 0; i < 15; i++) {
       for (j = 0; j < len; j++) {
         column[i].insertAdjacentHTML('beforeend', '<td></td>')
+      }
+    }
+  },
+  mounted: function () {
+    // 土日に色を付けたい
+    let holiColumn = document.querySelectorAll('tr.week th');
+    for (i = 0; i < holiColumn.length; i++){
+      if (holiColumn[i].innerHTML === '土') {
+        holiColumn[i].classList.add('sat');
+      } else if (holiColumn[i].innerHTML === '日') {
+        holiColumn[i].classList.add('sun');
+      }
+    }
+
+    // 日付の方も
+    let dateColumn = document.querySelectorAll('tr.date th');
+    for (i = this.firstSat; i <= dateColumn.length; i+=7) {
+      dateColumn[i].classList.add('sat');
+    }
+    for (i = this.firstSun; i <= dateColumn.length; i+=7) {
+      dateColumn[i].classList.add('sun');
+    }
+
+    // シフト表は土日をグレーにする
+    for (i = 0; i < 15; i++) {
+      let personColumn = document.querySelectorAll('tr.person');
+      let shiftColumn = personColumn[i].querySelectorAll('td');
+
+      for (j = this.firstSat; j <= dateColumn.length; j += 7) {
+        shiftColumn[j - 1].classList.add('gray');
+      }
+      for (j = this.firstSun; j <= dateColumn.length; j += 7) {
+        shiftColumn[j - 1].classList.add('gray');
       }
     }
   },
