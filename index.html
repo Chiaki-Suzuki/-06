@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>飲食店 | バイトシフト表</title>
+        <meta name="description" content="バイトシフト表">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.0/css/bootstrap-reboot.min.css">
+        <link rel="stylesheet" href="css/style.css">
+    </head>
+    <body>
+        <div id="app">
+            <div class="container">
+                <table class="calendar_table">
+                    <tr>
+                        <th rowspan="2">{{ month }}月</th>
+                        <th v-for="day in calendar">{{ day }}</th>
+                    </tr>
+                    <tr class="week">
+                        <th v-for="week in week">{{ week }}</th>
+                    </tr>
+                    <tr class="person">
+                        <th>バイト01</th>
+                    </tr>
+                    <tr class="person">
+                        <th>バイト02</th>
+                    </tr>
+                    <tr class="person">
+                        <th>バイト03</th>
+                    </tr>
+                    <tr class="person">
+                        <th>バイト04</th>
+                    </tr>
+                    <tr class="person">
+                        <th>バイト05</th>
+                    </tr>
+                    <tr class="person">
+                        <th>バイト06</th>
+                    </tr>
+                    <tr class="person">
+                        <th>バイト07</th>
+                    </tr>
+                    <tr class="person">
+                        <th>バイト08</th>
+                    </tr>
+                    <tr class="person">
+                        <th>バイト09</th>
+                    </tr>
+                    <tr class="person">
+                        <th>バイト10</th>
+                    </tr>
+                    <tr class="person">
+                        <th>バイト11</th>
+                    </tr>
+                    <tr class="person">
+                        <th>バイト12</th>
+                    </tr>
+                    <tr class="person">
+                        <th>バイト13</th>
+                    </tr>
+                    <tr class="person">
+                        <th>バイト14</th>
+                    </tr>
+                    <tr class="person">
+                        <th>バイト15</th>
+                    </tr>
+                </table>
+                <div class="btns">
+                    <button v-on:click="createShift()">シフト作成</button>
+                    <button class="reset" v-on:click="resetShift()">リセット</button>
+                </div>
+            </div>
+        </div>
+    </body>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <script src="js/main.js"></script>
+</html>

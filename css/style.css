@@ -1,0 +1,84 @@
+@charset "UTF-8";
+
+/*-------------------------
+  初期化
+-------------------------*/
+html {
+  font-size: 62.5%;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-size: 1.2rem;
+  font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
+}
+
+ul, ol {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+/*-------------------------
+  グローバル
+-------------------------*/
+.container {
+  width: 1000px;
+  margin: 40px auto;
+}
+
+.red {
+  background-color: #f00;
+}
+
+/*-------------------------
+  シフト表
+-------------------------*/
+.calendar_table {
+  border: 1px solid #ccc;
+  width: 100%;
+  margin-bottom: 20px;
+
+}
+
+.calendar_table th,
+.calendar_table td {
+  border-left: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+  padding: 5px;
+}
+
+.btns {
+  width: 410px;
+  margin: 0 auto;
+}
+
+button {
+  display: inline-block;
+  width: 300px;
+  padding: 10px;
+  border: 0;
+  color: #fff;
+  background-color: #66cabe;
+  border-radius: 3px;
+  box-shadow: 0 0 10px #bdeae5;
+  transition: .3s;
+  outline: none;
+}
+
+button:hover {
+  background-color: #3db7a9;
+  box-shadow: 0 0 15px #66cabe;
+}
+
+.reset{
+  width: 100px;
+  background-color: #ccc;
+  border-radius: 3px;
+  box-shadow: 0 0 10px #eee;
+}
+
+.reset:hover {
+  background-color: #bbb;
+  box-shadow: 0 0 15px #ccc;
+}
