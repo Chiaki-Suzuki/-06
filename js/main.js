@@ -67,6 +67,8 @@ let app = new Vue({
 
       // 当月の日数
       let len = new Date(year, month, 0).getDate();
+      // 当月の週数
+      let weeklen = Math.ceil(len / 7);
 
       /*-------------------------
         シフト作成
@@ -75,32 +77,62 @@ let app = new Vue({
       let numArray = [0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 10, 11, 11, 12, 12, 13, 13, 14, 14];
 
       // 配列をシャッフル
-      let shuffleArray = this.shuffle(numArray);
+      let weekArray = [];
+      for (i = 0; i < weeklen; i++) {
+        let shuffleArray = this.shuffle(numArray);
+        weekArray.push(shuffleArray)
+      }
 
       // 1列を曜日ごとに分割
       let week = [];
-      this.splitRow(shuffleArray, week);
-
-      // １つの曜日内に同じ数値がないように重複判定
-      while (this.confDup(week[0]) | this.confDup(week[1]) | this.confDup(week[2]) | this.confDup(week[3]) | this.confDup(week[4])) {
-        // 再度配列をシャッフル
-        shuffleArray = this.shuffle(numArray);
-
-        // 再度1列を曜日ごとに分割
-        week = [];
-        this.splitRow(shuffleArray, week);
-
-        // シャッフルしなおした配列も、重複がないかを再度チェック
-        for (i = 0; i < 5; i++) {
-          this.confDup(week[i]);
+      for (i = 0; i < weeklen; i++) {
+        // this.splitRow(weekArray[i], week);
+        for (j = 0; j < 30; j += 6) {
+          let weekDay = weekArray[i].slice(j, (j + 6));
+          week.push(weekDay)
         }
       }
 
+      // １つの曜日内に同じ数値がないように重複判定
+      for (x = 0; x < week.length; x += 5){
+        while (this.confDup(week[x]) | this.confDup(week[x + 1]) | this.confDup(week[x + 2]) | this.confDup(week[x + 3]) | this.confDup(week[x + 4])) {
+          // 再度配列をシャッフル
+          let shuffleNewArray = this.shuffle(numArray);
+
+          // 再度1列を曜日ごとに分割
+          let newWeek = []
+          for (j = 0; j < 30; j += 6) {
+            let weekDay = shuffleNewArray.slice(j, (j + 6));
+            newWeek.push(weekDay)
+          }
+
+          // 元の配列にシャッフルした部分だけ戻す
+          newWeek.forEach(function (value, i) {
+            week.splice((i + x), 1, value);
+          })
+        }
+      }
+
+      // 配列を5等分にする
+      // 1日分の配列 × 5(1週間分の配列) × 5(当月の週の分)
+      week = this.fiveArray(week);
+
       // 曜日ごとの出勤日を赤く染める
       let num = 1;
-      while (num <= 5) {
-        this.workDay(num, week[(num - 1)], len);
-        num = num + 1;
+      for (i = 0; i < weeklen; i++) {
+        for (j = 0; j < 5; j++) {
+          // 土日を除く
+          if (num === 6 | num === 13 | num === 20 | num === 27) {
+            num = num + 1;
+            num = num + 1;
+          }
+          // 配列が出勤日数を超過したら処理を止める
+          else if (num > len) {
+            break;
+          }
+          this.workDay(week[i][j], len, num);
+          num = num + 1;
+        }
       }
     },
     // 配列内をシャッフルする
@@ -118,15 +150,24 @@ let app = new Vue({
         week.push(weekDay)
       }
     },
-    // 勤務日を赤にする
-    workDay: function (num, array, len) {
-      for (i = num; i <= len; i = i + 7) {
-        let personColumn = document.querySelectorAll(`tr.person td:nth-of-type(${i})`);
-        for (j = 0; j < array.length; j++) {
-          personColumn[array[j]].classList.add('red');
-        }
+    // 配列を5等分にする
+    fiveArray: function(array){
+      let newWeek = [];
+      let oneWeek = [];
+      for (j = 0; j < array.length; j += 5) {
+        oneWeek = array.slice(j, (j + 5));
+        newWeek.push(oneWeek)
       }
-      return;
+      return newWeek;
+    },
+    // 勤務日を赤にする
+    workDay: function (array, len, num) {
+      let column = document.querySelectorAll(`tr.person td:nth-of-type(${num})`);
+      let personColumn = Array.from(column);
+
+      for (x = 0; x < array.length; x++) {
+        personColumn[array[x]].classList.add('red');
+      }
     },
     // 曜日ごとの配列内に重複した数値があるか判定
     confDup: function (array) {
