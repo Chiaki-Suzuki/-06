@@ -5,7 +5,9 @@ let app = new Vue({
     calendar: [],
     week: [],
     isSat: false,
-    isSun: false
+    isSun: false,
+    firstSat: '',
+    firstSun: ''
   },
   created: function() {
     // カレンダー作成
@@ -15,6 +17,11 @@ let app = new Vue({
     this.month = month;
     let weekArray = ['日', '月', '火', '水', '木', '金', '土'];
 
+    /*-------------------------
+      日付
+    -------------------------*/
+    // 今月の開始日を取得
+    let startDay = new Date(year, month - 1, 1)
     // 今月の終了日を取得
     let endDay = new Date(year, month, 0)
 
@@ -24,17 +31,19 @@ let app = new Vue({
       this.calendar.push(i)
     }
 
-    // 曜日を充てる
+    /*-------------------------
+      曜日
+    -------------------------*/
     // 最初の週だけの曜日を繰り返す
-    let startDay = new Date(year, month - 1, 1).getDay();
+    let startDayWeek = startDay.getDay();
     for (i = 0; i < 1; i++){
-      for (j = startDay; j < weekArray.length; j++) {
+      for (j = startDayWeek; j < weekArray.length; j++) {
         this.week.push(weekArray[j]);
       }
     }
 
     // 最初と最後の週以外の曜日を繰り返す
-    let firstWeek = (weekArray.length - startDay);
+    let firstWeek = (weekArray.length - startDayWeek);
     let row = Math.floor((len - firstWeek) / weekArray.length);
     for (i = 0; i < row; i++) {
       for (j = 0; j < weekArray.length; j++) {
@@ -48,6 +57,17 @@ let app = new Vue({
       this.week.push(weekArray[i])
     }
 
+    // 最初の土日を判定する
+    if (startDayWeek === 0) {
+      this.firstSat = (6 - startDayWeek) + 1;
+      this.firstSun = 1;
+    } else {
+      this.firstSat = (6 - startDayWeek) + 1;
+      this.firstSun = this.firstSat + 1;
+    }
+    /*-------------------------
+      カレンダー表示
+    -------------------------*/
     // 15人分の日数分のカラムを表示
     let column = document.querySelectorAll('tr.person')
     for (i = 0; i < 15; i++) {
@@ -110,12 +130,14 @@ let app = new Vue({
       let num = 1;
       for (i = 0; i < week.length; i++) {
         // 土日を除く
-        if (num === 6 | num === 13 | num === 20 | num === 27) {
-          num = num + 1;
-          num = num + 1;
+        for (j = this.firstSat; j <= len; j+=7) {
+          if (num === j){
+            num = num + 1;
+            num = num + 1;
+          }
         }
         // 配列が出勤日数を超過したら処理を止める
-        else if (num > len) {
+        if (num > len) {
           break;
         }
         this.workDay(week[i], len, num);
