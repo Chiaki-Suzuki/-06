@@ -132,14 +132,14 @@ let app = new Vue({
 
       // 配列をシャッフル
       let weekArray = [];
-      for (i = 0; i < weeklen; i++) {
+      for (i = 0; i < weeklen + 1; i++) {
         let shuffleArray = this.shuffle(numArray);
         weekArray.push(shuffleArray)
       }
 
       // 1列を曜日ごとに分割
       let week = [];
-      for (i = 0; i < weeklen; i++) {
+      for (i = 0; i < weeklen + 1; i++) {
         this.splitRow(weekArray[i], week);
       }
 
@@ -160,9 +160,15 @@ let app = new Vue({
         }
       }
 
+      console.log(week)
       // 曜日ごとの出勤日を赤く染める
       let num = 1;
-      for (i = 0; i < week.length; i++) {
+      // for (i = 1; i < 5; i++) {
+      //   if (this.firstSun === i) {
+      //     num = num + i;
+      //   };
+      // }
+      for (i = (7 - this.firstSun); i < week.length; i++) {
         // 土日を除く
         for (j = this.firstSat; j <= len; j+=7) {
           if (num === j){
