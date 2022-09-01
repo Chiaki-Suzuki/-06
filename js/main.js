@@ -51,8 +51,11 @@ let app = new Vue({
 
     // 最後の週だけの曜日を繰り返す
     let lastWeek = endDay.getDay();
-    for (i = 0; i <= lastWeek; i++) {
-      this.week.push(weekArray[i])
+    if (lastWeek === 6) {
+    } else {
+      for (i = 0; i <= lastWeek; i++) {
+        this.week.push(weekArray[i])
+      }
     }
 
     // 最初の土日を判定する
@@ -87,10 +90,10 @@ let app = new Vue({
 
     // 日付の方も
     let dateColumn = document.querySelectorAll('tr.date th');
-    for (i = this.firstSat; i <= dateColumn.length; i+=7) {
+    for (i = this.firstSat; i < dateColumn.length; i+=7) {
       dateColumn[i].classList.add('sat');
     }
-    for (i = this.firstSun; i <= dateColumn.length; i+=7) {
+    for (i = this.firstSun; i < dateColumn.length; i+=7) {
       dateColumn[i].classList.add('sun');
     }
 
@@ -99,10 +102,10 @@ let app = new Vue({
       let personColumn = document.querySelectorAll('tr.person');
       let shiftColumn = personColumn[i].querySelectorAll('td');
 
-      for (j = this.firstSat; j <= dateColumn.length; j += 7) {
+      for (j = this.firstSat; j < dateColumn.length; j += 7) {
         shiftColumn[j - 1].classList.add('gray');
       }
-      for (j = this.firstSun; j <= dateColumn.length; j += 7) {
+      for (j = this.firstSun; j < dateColumn.length; j += 7) {
         shiftColumn[j - 1].classList.add('gray');
       }
     }
@@ -118,9 +121,9 @@ let app = new Vue({
 
       // 当月の日数
       let len = new Date(year, month, 0).getDate();
+
       // 当月の週数
       let weeklen = Math.ceil(len / 7);
-
       /*-------------------------
         シフト作成
       -------------------------*/
@@ -168,7 +171,7 @@ let app = new Vue({
           }
         }
         // 配列が出勤日数を超過したら処理を止める
-        if (num > len) {
+        if (num >= len + 1) {
           break;
         }
         this.workDay(week[i], len, num);
