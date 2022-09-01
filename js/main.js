@@ -163,11 +163,6 @@ let app = new Vue({
       console.log(week)
       // 曜日ごとの出勤日を赤く染める
       let num = 1;
-      // for (i = 1; i < 5; i++) {
-      //   if (this.firstSun === i) {
-      //     num = num + i;
-      //   };
-      // }
       for (i = (7 - this.firstSun); i < week.length; i++) {
         // 土日を除く
         for (j = this.firstSat; j <= len; j+=7) {
