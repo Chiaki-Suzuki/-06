@@ -127,7 +127,7 @@ Vue.createApp({
         const copiedShuffledArr = shuffledArr.slice();
         copiedShuffledArr.push(copiedShuffledArr.shift());
         const newArr = shuffledArr.concat(copiedShuffledArr);
-
+console.log(newArr)
         const businessDays = 5;
         const numberPerDay = Math.floor(newArr.length / businessDays);
         const moduloMembers = newArr.length % businessDays;

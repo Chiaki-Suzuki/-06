@@ -127,40 +127,50 @@ let app = new Vue({
       /*-------------------------
         シフト作成
       -------------------------*/
-      // 1人あたり週2勤務 × 15人 = 一週間あたり出勤枠30枠を用意
-      let numArray = [0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 10, 11, 11, 12, 12, 13, 13, 14, 14];
+      // 15人
+      let simpleNumArray = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
 
       // 配列をシャッフル
-      let weekArray = [];
-      for (i = 0; i < weeklen + 1; i++) {
-        let shuffleArray = this.shuffle(numArray);
-        weekArray.push(shuffleArray)
-      }
+      let shuffleArray = this.shuffle(simpleNumArray);
 
-      // 1列を曜日ごとに分割
-      let week = [];
-      for (i = 0; i < weeklen + 1; i++) {
-        this.splitRow(weekArray[i], week);
-      }
+      // 1列を曜日ごとに分割（前半）
+      let first = [];
+      this.splitRow(shuffleArray, first);
 
-      // １つの曜日内に同じ数値がないように重複判定
-      for (x = 0; x < week.length; x += 5){
-        while (this.confDup(week[x]) | this.confDup(week[x + 1]) | this.confDup(week[x + 2]) | this.confDup(week[x + 3]) | this.confDup(week[x + 4])) {
-          // 再度配列をシャッフル
-          let shuffleNewArray = this.shuffle(numArray);
+      // 前半の配列をコピー
+      let latter = first.concat()
 
-          // 再度1列を曜日ごとに分割
-          let newWeek = [];
-          this.splitRow(shuffleNewArray, newWeek);
+      // 4週分繰り返し
+      let week = []
+      let multiWeek = []
+      for (x = 0; x < 4; x++) {
+        // 後半の配列を１つずらす
+        let latterFirst = latter.splice(0, 1);
+        latter = latter.concat(latterFirst)
 
-          // 元の配列にシャッフルした部分だけ戻す
-          newWeek.forEach(function (value, i) {
-            week.splice((i + x), 1, value);
-          })
+        // 前半と後半の配列をくっつける
+        let day = [];
+        let oneWeek = [] // 1週間の中でシャッフル用
+        for (i = 0; i < first.length; i++) {
+          day = first[i].concat(latter[i])
+          oneWeek.push(day)
         }
+        // 勤務日が固定にならないようにシフトの組み合わせはそのままで週ごとにシャッフル
+        oneWeek = this.shuffle(oneWeek)
+        // 3次元配列
+        multiWeek.push(oneWeek)
+        // 2次元配列に戻す
+        week = multiWeek.reduce((acc, elem) => {
+          return acc.concat(elem)
+        })
       }
-
       console.log(week)
+
+      // 20日分のシフトを繰り返して30日分にする
+      let shortageDay = week.concat().splice(0, 10)
+      week = week.concat(shortageDay)
+
+      // console.log(week)
       // 曜日ごとの出勤日を赤く染める
       let num = 1;
       for (i = (7 - this.firstSun); i < week.length; i++) {
@@ -189,8 +199,8 @@ let app = new Vue({
     },
     // 1列を曜日ごとに分割
     splitRow: function (shuffleArray, week) {
-      for (z = 0; z < 30; z += 6) {
-        let weekDay = shuffleArray.slice(z, (z + 6));
+      for (z = 0; z < 15; z += 3) {
+        let weekDay = shuffleArray.slice(z, (z + 3));
         week.push(weekDay)
       }
     },
