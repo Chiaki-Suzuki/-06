@@ -14,7 +14,6 @@ let app = new Vue({
     let year = date.getFullYear();
     let month = date.getMonth() + 1;
     this.month = month;
-    let weekArray = ['日', '月', '火', '水', '木', '金', '土'];
 
     /*-------------------------
       日付
@@ -27,7 +26,7 @@ let app = new Vue({
     // 空の配列に当月の日付をすべて格納
     this.len = endDay.getDate();
     for (i = 1; i <= this.len; i++) {
-      this.calendar.push(i)
+      this.calendar.push({ num: i, classSat: false, classSun: false })
     }
 
     /*-------------------------
@@ -35,20 +34,18 @@ let app = new Vue({
     -------------------------*/
     // 最初の週だけの曜日を繰り返す
     let startDayWeek = startDay.getDay();
-    this.dayRow(1, startDayWeek)
+    this.dayRow(1, startDayWeek, 7)
 
     // 最初と最後の週以外の曜日を繰り返す
-    let firstWeek = (weekArray.length - startDayWeek);
-    let row = Math.floor((this.len - firstWeek) / weekArray.length);
-    this.dayRow(row, 0)
+    let firstWeek = (7 - startDayWeek);
+    let row = Math.floor((this.len - firstWeek) / 7);
+    this.dayRow(row, 0, 7)
 
     // 最後の週だけの曜日を繰り返す
     let lastWeek = endDay.getDay();
     if (lastWeek === 6) {
     } else {
-      for (i = 0; i <= lastWeek; i++) {
-        this.week.push(weekArray[i])
-      }
+      this.dayRow(1, 0, (lastWeek + 1))
     }
 
     // 最初の土日を判定する
@@ -58,25 +55,15 @@ let app = new Vue({
     } else {
       this.firstSun = this.firstSat + 1;
     }
-  },
-  mounted: function () {
-    // 土日に色を付けたい
-    let holiColumn = document.querySelectorAll('tr.week th');
-    this.calenderColor(this.firstSat, holiColumn, 'sat')
-    this.calenderColor(this.firstSun, holiColumn, 'sun')
 
-    // 日付の方も
-    let dateColumn = document.querySelectorAll('tr.date th');
-    this.calenderColor((this.firstSat + 1), dateColumn, 'sat')
-    this.calenderColor((this.firstSun + 1), dateColumn, 'sun')
-
-    // シフト表は土日をグレーにする
-    for (i = 0; i < 15; i++) {
-      let personColumn = document.querySelectorAll('tr.person');
-      let shiftColumn = personColumn[i].querySelectorAll('td');
-
-      this.calenderColor(this.firstSat, shiftColumn, 'gray')
-      this.calenderColor(this.firstSun, shiftColumn, 'gray')
+    // カレンダーに色付け
+    for (x = this.firstSat; x <= this.len; x += 7) {
+      // 土曜日
+      this.calendar[x - 1].classSat = true;
+      this.week[x - 1].classSat = true;
+      // 日曜日
+      this.calendar[x].classSun = true;
+      this.week[x].classSun = true;
     }
   },
   methods: {
@@ -84,18 +71,12 @@ let app = new Vue({
       カレンダー作成
     -------------------------*/
     // 一か月の曜日を配列に格納する
-    dayRow: function (weeklen, startDay) {
+    dayRow: function (weeklen, startDay, length) {
       let weekArray = ['日', '月', '火', '水', '木', '金', '土'];
       for (i = 0; i < weeklen; i++){
-        for (j = startDay; j < weekArray.length; j++) {
-          this.week.push(weekArray[j]);
+        for (j = startDay; j < length; j++) {
+          this.week.push({ day: weekArray[j], classSat: false, classSun: false });
         }
-      }
-    },
-    // カレンダー色付け
-    calenderColor: function (holidays, column, className) {
-      for (x = holidays; x <= this.len ; x += 7) {
-        column[x - 1].classList.add(`${className}`);
       }
     },
     /*-------------------------

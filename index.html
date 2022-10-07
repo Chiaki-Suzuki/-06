@@ -14,70 +14,106 @@
                 <table class="calendar_table">
                     <tr class="date">
                         <th rowspan="2">{{ month }}月</th>
-                        <th v-for="day in calendar">{{ day }}</th>
+                        <th v-for="day in calendar"
+                            :class="[{sat: day.classSat}, {sun: day.classSun}]">
+                            {{ day.num }}
+                        </th>
                     </tr>
                     <tr class="week">
-                        <th v-for="week in week">{{ week }}</th>
+                        <th v-for="week in week"
+                            :class="[{sat: week.classSat}, {sun: week.classSun}]">
+                            {{ week.day }}
+                        </th>
                     </tr>
                     <tr class="person">
                         <th>バイト01</th>
-                        <td v-for="i in len"></td>
+                        <td v-for="person in calendar"
+                            :class="[{gray: person.classSat}, {gray: person.classSun}]">
+                        </td>
                     </tr>
                     <tr class="person">
                         <th>バイト02</th>
-                        <td v-for="i in len"></td>
+                        <td v-for="person in calendar"
+                            :class="[{gray: person.classSat}, {gray: person.classSun}]">
+                        </td>
                     </tr>
                     <tr class="person">
                         <th>バイト03</th>
-                        <td v-for="i in len"></td>
+                        <td v-for="person in calendar"
+                            :class="[{gray: person.classSat}, {gray: person.classSun}]">
+                        </td>
                     </tr>
                     <tr class="person">
                         <th>バイト04</th>
-                        <td v-for="i in len"></td>
+                        <td v-for="person in calendar"
+                            :class="[{gray: person.classSat}, {gray: person.classSun}]">
+                        </td>
                     </tr>
                     <tr class="person">
                         <th>バイト05</th>
-                        <td v-for="i in len"></td>
+                        <td v-for="person in calendar"
+                            :class="[{gray: person.classSat}, {gray: person.classSun}]">
+                        </td>
                     </tr>
                     <tr class="person">
                         <th>バイト06</th>
-                        <td v-for="i in len"></td>
+                        <td v-for="person in calendar"
+                            :class="[{gray: person.classSat}, {gray: person.classSun}]">
+                        </td>
                     </tr>
                     <tr class="person">
                         <th>バイト07</th>
-                        <td v-for="i in len"></td>
+                        <td v-for="person in calendar"
+                            :class="[{gray: person.classSat}, {gray: person.classSun}]">
+                        </td>
                     </tr>
                     <tr class="person">
                         <th>バイト08</th>
-                        <td v-for="i in len"></td>
+                        <td v-for="person in calendar"
+                            :class="[{gray: person.classSat}, {gray: person.classSun}]">
+                        </td>
                     </tr>
                     <tr class="person">
                         <th>バイト09</th>
-                        <td v-for="i in len"></td>
+                        <td v-for="person in calendar"
+                            :class="[{gray: person.classSat}, {gray: person.classSun}]">
+                        </td>
                     </tr>
                     <tr class="person">
                         <th>バイト10</th>
-                        <td v-for="i in len"></td>
+                        <td v-for="person in calendar"
+                            :class="[{gray: person.classSat}, {gray: person.classSun}]">
+                        </td>
                     </tr>
                     <tr class="person">
                         <th>バイト11</th>
-                        <td v-for="i in len"></td>
+                        <td v-for="person in calendar"
+                            :class="[{gray: person.classSat}, {gray: person.classSun}]">
+                        </td>
                     </tr>
                     <tr class="person">
                         <th>バイト12</th>
-                        <td v-for="i in len"></td>
+                        <td v-for="person in calendar"
+                            :class="[{gray: person.classSat}, {gray: person.classSun}]">
+                        </td>
                     </tr>
                     <tr class="person">
                         <th>バイト13</th>
-                        <td v-for="i in len"></td>
+                        <td v-for="person in calendar"
+                            :class="[{gray: person.classSat}, {gray: person.classSun}]">
+                        </td>
                     </tr>
                     <tr class="person">
                         <th>バイト14</th>
-                        <td v-for="i in len"></td>
+                        <td v-for="person in calendar"
+                            :class="[{gray: person.classSat}, {gray: person.classSun}]">
+                        </td>
                     </tr>
                     <tr class="person">
                         <th>バイト15</th>
-                        <td v-for="i in len"></td>
+                        <td v-for="person in calendar"
+                            :class="[{gray: person.classSat}, {gray: person.classSun}]">
+                        </td>
                     </tr>
                 </table>
                 <div class="btns">
